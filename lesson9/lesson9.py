@@ -1,38 +1,34 @@
 import os
-import random
-import csv
-def save_csv(s,filename):
-    fieldnames = s[0].keys()
-    current_dir = os.path.dirname(os.path.abspath("__file__"))
-    file_path = os.path.join(current_dir,'assets',filename)
+import tools
 
-    with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        for d in s:
-            writer.writerow(d)
-def getnames(file_names):
-    current_dir = os.path.dirname(os.path.abspath("__file__"))
-    file_path = os.path.join(current_dir,'assets',file_names)
+def get_asset_path(filename: str) -> str:
+    """取得 assets 資料夾內檔案的完整路徑"""
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(current_dir, 'assets', filename)
 
 
-    with open(file_path, "r", encoding="utf-8") as file:
-        content = file.read()
-    return content.split('\n')
-def get_scores(names,num=10):
-    l=random.sample(names,num)
-    scores=[]
-    for n in l:
-        s={'姓名':n,
-            '國文':random.randint(50,100),
-            '數學':random.randint(50,100),
-            '英文':random.randint(50,100)
-            }
-        scores.append(s)
-    return scores
-names=getnames('names.txt')
-num=int(input('請輸入學生數量'))
-scores=get_scores(names,num)
-save_csv(scores,'學生.csv')
-#print("\n".join(str(item) for item in scores))
 
+def main():
+    file_path = get_asset_path("names.txt")
+
+    names: list[str] = tools.get_names(file_path)
+    
+    if not names:
+        print("無法讀取名單,程式結束")
+        return
+    
+    try:
+        num: int = int(input(f"請輸入學生數量(1-{len(names)}):"))
+        if num <= 0:
+            print("學生數量必須大於 0")
+            return
+    except ValueError:
+        print("請輸入有效的數字")
+        return
+    
+    students: list[dict] = tools.get_scores(names, num=num)
+    file_path = get_asset_path('students.csv')
+    tools.save_csv(students, file_path)
+
+if __name__ == '__main__':
+    main()
