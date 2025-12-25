@@ -6,3 +6,5 @@ seaborn
 jinja2
 wget
 yfinance
+"python-dotenv>=1.2.1"
+google-genai
