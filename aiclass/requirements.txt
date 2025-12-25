@@ -8,3 +8,4 @@ wget
 yfinance
 "python-dotenv>=1.2.1"
 google-genai
+line-bot-sdk

@@ -16,5 +16,6 @@ dependencies = [
     "seaborn>=0.13.2",
     "wget>=3.2",
     "yfinance>=0.2.66",
-    "google-genai"
+    "google-genai",
+    "line-bot-sdk>=3.21.0",
 ]
